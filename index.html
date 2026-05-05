@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnuRaam Sarees</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+font-family:Poppins,sans-serif;
+background:#faf7f2;
+color:#222;
+}
+
+/* HEADER */
+header{
+background:linear-gradient(112deg,#800020 60%,#ffffff 40%);
+padding:15px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+header div{
+font-weight:bold;
+font-size:20px;
+color:white;
+}
+
+nav a{
+margin:0 10px;
+color:#800020;
+text-decoration:none;
+font-weight:500;
+}
+
+/* HERO */
+.hero{
+height:75vh;
+background:url('https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1600&q=80');
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+padding:80px;
+color:white;
+position:relative;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(0,0,0,0.45);
+}
+
+.hero-content{
+position:relative;
+max-width:600px;
+}
+
+.hero h1{
+font-family:"Playfair Display";
+font-size:3em;
+}
+
+.hero button{
+margin-top:15px;
+padding:12px 25px;
+border:none;
+background:linear-gradient(45deg,#8b1e3f,#c2185b);
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+/* FILTER */
+.categories{
+display:flex;
+justify-content:center;
+gap:15px;
+padding:25px;
+flex-wrap:wrap;
+}
+
+/* PRODUCTS */
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+padding:40px;
+max-width:1300px;
+margin:auto;
+}
+
+.card{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.card img{
+width:100%;
+height:300px;
+object-fit:cover;
+}
+
+.card-body{
+padding:15px;
+}
+
+.price-old{text-decoration:line-through;color:gray}
+.price-new{color:#c2185b;font-weight:bold;margin-left:10px}
+
+.qty{
+display:flex;
+justify-content:center;
+gap:10px;
+margin:10px 0;
+}
+
+.btn{
+width:100%;
+padding:10px;
+margin-top:5px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.add{background:#c2185b;color:white}
+.remove{background:#444;color:white}
+
+/* CART */
+#cart {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 32px;
+
+  border-radius: 18px;
+  background: transparent;
+
+  position: relative;
+  isolation: isolate;
+
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* outer frame */
+#cart::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+
+  /* creates a framed border effect */
+  background: linear-gradient(
+    145deg,
+    rgba(0,0,0,0.18),
+    rgba(0,0,0,0.02),
+    rgba(0,0,0,0.12)
+  );
+
+  /* mask to show only border */
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+}
+
+/* inner soft inset edge */
+#cart::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+}
+
+/* hover lift */
+#cart:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.16);
+}
+
+/* hover effect (premium feel) */
+#cart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 45px rgba(0,0,0,0.15);
+}
+.cart-item{
+display:flex;
+justify-content:space-between;
+padding:8px;
+border-bottom:1px solid #eee;
+}
+
+/* MODAL */
+.modal{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+padding:20px;
+}
+
+.modal-content{
+background:white;
+padding:20px;
+border-radius:10px;
+max-width:700px;
+width:100%;
+max-height:90vh;
+overflow-y:auto;
+}
+
+.modal-images{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin:15px 0;
+}
+
+.modal-images img{
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:8px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+.hero{padding:30px;height:60vh}
+.hero h1{font-size:2em}
+.products{padding:20px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div>AnuRaam Textiles</div>
+<nav>
+<a href="#products">Shop</a>
+<a href="#cart">Cart</a>
+</nav>
+</header>
+
+<section class="hero">
+<div class="hero-content">
+<h1>Luxury Sarees Collection</h1>
+<p>Timeless Silk • Elegant Cotton • Designer Weaves</p>
+<button onclick="scrollToProducts()">Shop Now</button>
+</div>
+</section>
+
+
+
+<div class="categories">
+<button onclick="filter('All')">All</button>
+<button onclick="filter('Silk')">Silk</button>
+<button onclick="filter('Cotton')">Cotton</button>
+<button onclick="filter('Designer')">Designer</button>
+</div>
+
+<section class="products" id="products"></section>
+
+<div id="cart">
+<h2>Cart</h2>
+<div id="cartList"></div>
+<h3>Total: ₹<span id="total">0</span></h3>
+
+<input id="name" placeholder="Name"><br><br>
+<input id="phone" placeholder="Phone"><br><br>
+<input id="address" placeholder="Address"><br><br>
+
+<select id="pay">
+  <option value="cod">COD</option>
+  <option value="upi">UPI</option>
+</select>
+
+<div id="upiQr" style="display:none; margin-top:15px;">
+  <img src="upi-qr.png" width="200" alt="UPI QR Code">
+</div>
+
+<br><br>
+<button onclick="order()">Place Order</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+
+const data=[
+{
+id:1,
+name:"Kanchipuram Silk",
+price:18000,
+discount:14500,
+type:"Silk",
+images:[
+"https://picsum.photos/id/1011/400",
+"https://picsum.photos/id/1012/400",
+"https://picsum.photos/id/1013/400",
+"https://picsum.photos/id/1014/400",
+"https://picsum.photos/id/1015/400",
+"https://picsum.photos/id/1016/400"
+]
+},
+{
+id:2,
+name:"Banarasi Bridal Saree",
+price:20000,
+discount:15500,
+type:"Silk",
+images:[
+"https://picsum.photos/id/1021/400",
+"https://picsum.photos/id/1022/400",
+"https://picsum.photos/id/1023/400",
+"https://picsum.photos/id/1024/400",
+"https://picsum.photos/id/1025/400",
+"https://picsum.photos/id/1026/400"
+]
+},
+{
+id:3,
+name:"Cotton Daily Wear Saree",
+price:6000,
+discount:4200,
+type:"Cotton",
+images:[
+"https://picsum.photos/id/1031/400",
+"https://picsum.photos/id/1032/400",
+"https://picsum.photos/id/1033/400",
+"https://picsum.photos/id/1034/400",
+"https://picsum.photos/id/1035/400",
+"https://picsum.photos/id/1036/400"
+]
+},
+{
+id:4,
+name:"Designer Party Wear Saree",
+price:22000,
+discount:18000,
+type:"Designer",
+images:[
+"https://picsum.photos/id/1041/400",
+"https://picsum.photos/id/1042/400",
+"https://picsum.photos/id/1043/400",
+"https://picsum.photos/id/1044/400",
+"https://picsum.photos/id/1045/400",
+"https://picsum.photos/id/1046/400"
+]
+},
+{
+id:5,
+name:"Mysore Silk Saree",
+price:17000,
+discount:13500,
+type:"Silk",
+images:[
+"https://picsum.photos/id/1051/400",
+"https://picsum.photos/id/1052/400",
+"https://picsum.photos/id/1053/400",
+"https://picsum.photos/id/1054/400",
+"https://picsum.photos/id/1055/400",
+"https://picsum.photos/id/1056/400"
+]
+},
+{
+id:6,
+name:"Printed Cotton Saree",
+price:5000,
+discount:3500,
+type:"Cotton",
+images:[
+"https://picsum.photos/id/1061/400",
+"https://picsum.photos/id/1062/400",
+"https://picsum.photos/id/1063/400",
+"https://picsum.photos/id/1064/400",
+"https://picsum.photos/id/1065/400",
+"https://picsum.photos/id/1066/400"
+]
+},
+{
+id:7,
+name:"Georgette Party Saree",
+price:14000,
+discount:11000,
+type:"Designer",
+images:[
+"https://picsum.photos/id/1071/400",
+"https://picsum.photos/id/1072/400",
+"https://picsum.photos/id/1073/400",
+"https://picsum.photos/id/1074/400",
+"https://picsum.photos/id/1075/400",
+"https://picsum.photos/id/1076/400"
+]
+},
+{
+id:8,
+name:"Chanderi Silk Saree",
+price:13000,
+discount:9900,
+type:"Silk",
+images:[
+"https://picsum.photos/id/1081/400",
+"https://picsum.photos/id/1082/400",
+"https://picsum.photos/id/1083/400",
+"https://picsum.photos/id/1084/400",
+"https://picsum.photos/id/1085/400",
+"https://picsum.photos/id/1086/400"
+]
+},
+{
+id:9,
+name:"Handloom Cotton Saree",
+price:4500,
+discount:3200,
+type:"Cotton",
+images:[
+"https://picsum.photos/id/1091/400",
+"https://picsum.photos/id/1092/400",
+"https://picsum.photos/id/1093/400",
+"https://picsum.photos/id/1094/400",
+"https://picsum.photos/id/1095/400",
+"https://picsum.photos/id/1096/400"
+]
+},
+{
+id:10,
+name:"Premium Wedding Saree",
+price:25000,
+discount:19999,
+type:"Designer",
+images:[
+"https://picsum.photos/id/1101/400",
+"https://picsum.photos/id/1102/400",
+"https://picsum.photos/id/1103/400",
+"https://picsum.photos/id/1104/400",
+"https://picsum.photos/id/1105/400",
+"https://picsum.photos/id/1106/400"
+]
+}
+];
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function saveCart(){
+localStorage.setItem("cart",JSON.stringify(cart));
+}
+
+/* RENDER PRODUCTS */
+function render(list=data){
+let box=document.getElementById("products");
+box.innerHTML="";
+
+list.forEach(p=>{
+box.innerHTML+=`
+<div class="card">
+<img src="${p.images[0]}">
+<div class="card-body">
+<h3>${p.name}</h3>
+
+<span class="price-old">₹${p.price}</span>
+<span class="price-new">₹${p.discount}</span>
+
+<div class="qty">
+<button onclick="dec(${p.id})">-</button>
+<span id="q_${p.id}">1</span>
+<button onclick="inc(${p.id})">+</button>
+</div>
+
+<button class="btn add" onclick="add(${p.id})">Add</button>
+<button class="btn remove" onclick="removeFromCart(${p.id})">Remove</button>
+<button class="btn" onclick="view(${p.id})">View</button>
+
+</div>
+</div>`;
+});
+}
+
+function inc(id){
+let el=document.getElementById("q_"+id);
+el.innerText=parseInt(el.innerText)+1;
+}
+
+function dec(id){
+let el=document.getElementById("q_"+id);
+if(el.innerText>1) el.innerText--;
+}
+
+function filter(t){
+if(t==="All") render(data);
+else render(data.filter(x=>x.type===t));
+}
+
+/* ADD CART */
+function add(id){
+let p=data.find(x=>x.id===id);
+let q=parseInt(document.getElementById("q_"+id).innerText);
+
+let ex=cart.find(x=>x.id===id);
+if(ex) ex.qty+=q;
+else cart.push({...p,qty:q});
+
+document.getElementById("q_"+id).innerText=1;
+saveCart();
+update();
+}
+
+/* REMOVE */
+function removeFromCart(id){
+cart=cart.filter(x=>x.id!==id);
+saveCart();
+update();
+}
+
+/* UPDATE CART */
+function update(){
+let box=document.getElementById("cartList");
+box.innerHTML="";
+let total=0;
+
+cart.forEach(c=>{
+total+=c.discount*c.qty;
+box.innerHTML+=`
+<div class="cart-item">
+${c.name} x ${c.qty} = ₹${c.discount*c.qty}
+<button onclick="removeFromCart(${c.id})">X</button>
+</div>`;
+});
+
+document.getElementById("total").innerText=total;
+}
+
+/* VIEW POPUP WITH 5-6 IMAGES */
+function view(id){
+let p=data.find(x=>x.id===id);
+
+document.getElementById("modal").style.display="flex";
+
+let imgs=p.images.map(img=>`<img src="${img}">`).join("");
+
+document.getElementById("modalContent").innerHTML=`
+<h2>${p.name}</h2>
+
+<div class="modal-images">
+${imgs}
+</div>
+
+<p><b>Price:</b> ₹${p.discount}</p>
+<p><b>Original:</b> ₹${p.price}</p>
+
+<button onclick="closeModal()">Close</button>
+`;
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+/* ORDER */
+function order(){
+
+let name=document.getElementById("name").value.trim();
+let phone=document.getElementById("phone").value.trim();
+let address=document.getElementById("address").value.trim();
+let pay=document.getElementById("pay").value;
+
+if(!name || !phone || !address){
+alert("Fill all details");
+return;
+}
+
+if(!/^[0-9]{10}$/.test(phone)){
+alert("Invalid phone");
+return;
+}
+
+if(cart.length===0){
+alert("Cart empty");
+return;
+}
+
+let msg="ORDER\n\n";
+let total=0;
+
+cart.forEach(c=>{
+msg+=`${c.name} x ${c.qty} = ₹${c.discount*c.qty}\n`;
+total+=c.discount*c.qty;
+});
+
+msg+=`\nTotal: ₹${total}`;
+msg+=`\n\n${name}\n${phone}\n${address}\n${pay}`;
+
+if(confirm(msg)){
+window.open("https://wa.me/919741216776?text="+encodeURIComponent(msg));
+cart=[];
+saveCart();
+update();
+}
+}
+
+/* SCROLL */
+function scrollToProducts(){
+document.getElementById("products").scrollIntoView({behavior:"smooth"});
+}
+
+render();
+update();
+const pay = document.getElementById("pay");
+  const upiQr = document.getElementById("upiQr");
+
+  pay.addEventListener("change", function () {
+    if (this.value === "upi") {
+      upiQr.style.display = "block";
+    } else {
+      upiQr.style.display = "none";
+    }
+  });
+</script>
+
+</body>
+</html>
